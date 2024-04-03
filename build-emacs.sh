@@ -15,7 +15,6 @@ pacman --noconfirm -S --needed \
     mingw-w64-x86_64-librsvg \
     mingw-w64-x86_64-libwebp \
     mingw-w64-x86_64-lcms2 \
-    mingw-w64-x86_64-jansson \
     mingw-w64-x86_64-libxml2 \
     mingw-w64-x86_64-zlib \
     mingw-w64-x86_64-harfbuzz \
@@ -66,7 +65,6 @@ cp -v /mingw64/bin/libhogweed-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libiconv-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libidn*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libintl-*.dll /c/programs/emacs/bin
-cp -v /mingw64/bin/libjansson-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libjbig-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libjpeg-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/liblcms*.dll /c/programs/emacs/bin
