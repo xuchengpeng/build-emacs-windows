@@ -2,6 +2,8 @@
 
 set -v
 
+repo_branch=$1
+
 pacman --noconfirm -S --needed \
     base-devel \
     mingw-w64-x86_64-toolchain \
@@ -27,11 +29,9 @@ git config --global core.autocrlf false
 
 mkdir /c/emacs
 cd /c/emacs
-git clone --depth=1 https://git.savannah.gnu.org/git/emacs.git emacs-master
-cd /c/emacs/emacs-master
-EMACS_COMMIT=$(git rev-parse --short HEAD)
-EMACS_VER=$(date +'%Y%m%d')-${EMACS_COMMIT}
+git clone --depth=1 --branch ${repo_branch} https://git.savannah.gnu.org/git/emacs.git emacs-repo
 
+cd /c/emacs/emacs-repo
 ./autogen.sh
 ./configure --prefix=/c/programs/emacs --without-dbus --without-native-compilation
 NPROC=$(nproc)
@@ -96,4 +96,4 @@ cp -v /mingw64/bin/libzstd.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/zlib*.dll /c/programs/emacs/bin
 
 cd /c/programs/
-tar -zcf emacs-${EMACS_VER}.tar.gz emacs
+tar -zcf emacs.tar.gz emacs

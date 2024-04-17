@@ -3,10 +3,10 @@ name: release
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "emacs-*"
 
 jobs:
-  build:
+  release:
     runs-on: windows-latest
     steps:
       - name: git config
@@ -22,11 +22,17 @@ jobs:
         shell: msys2 {0}
         run: |
           chmod +x build-emacs.sh
-          ./build-emacs.sh
+          ./build-emacs.sh ${{ github.ref_name }}
+          cd /c/emacs/emacs-repo
+          echo "EMACS_VER=`date  +'%Y%m%d'`-`git rev-parse --short HEAD`" >> $GITHUB_ENV
+          cd /c/programs/
+          mv emacs.tar.gz ${{ github.ref_name }}.tar.gz
       - name: release
         uses: softprops/action-gh-release@v2
         with:
-          name: "Emacs ${{ github.ref_name }}"
+          name: ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
+          body: "${{ github.ref_name }}-${{ env.EMACS_VER }}"
+          draft: false
           prerelease: false
           files: C:/programs/emacs-*.tar.gz

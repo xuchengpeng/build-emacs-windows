@@ -2,6 +2,8 @@ name: build
 
 on:
   push:
+    branches:
+      - "**"
     paths-ignore:
       - "**/*.md"
       - "**/*.org"
@@ -25,11 +27,31 @@ jobs:
         shell: msys2 {0}
         run: |
           chmod +x build-emacs.sh
-          ./build-emacs.sh
+          ./build-emacs.sh master
+          cd /c/emacs/emacs-repo
+          EMACS_VER=$(date +'%Y%m%d')-$(git rev-parse --short HEAD)
+          echo "EMACS_VER=`date  +'%Y%m%d'`-`git rev-parse --short HEAD`" >> $GITHUB_ENV
+          cd /c/programs/
+          mv emacs.tar.gz emacs-${EMACS_VER}.tar.gz
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: emacs-packages
+          path: C:/programs/emacs-*.tar.gz
+          if-no-files-found: error
+      - name: delete nightly release
+        shell: bash
+        run: |
+          gh release delete nightly --cleanup-tag --yes
+          sleep 5
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: release
         uses: softprops/action-gh-release@v2
         with:
-          name: Emacs nightly build
+          name: emacs nightly build
           tag_name: nightly
+          body: "emacs-${{ env.EMACS_VER }}"
+          draft: false
           prerelease: true
           files: C:/programs/emacs-*.tar.gz
