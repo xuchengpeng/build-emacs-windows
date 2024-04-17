@@ -1,0 +1,32 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: git config
+        run: git config --global core.autocrlf false
+        shell: bash
+      - name: setup msys2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: mingw64
+          update: true
+      - uses: actions/checkout@v4
+      - name: build
+        shell: msys2 {0}
+        run: |
+          chmod +x build-emacs.sh
+          ./build-emacs.sh
+      - name: release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Emacs ${{ github.ref_name }}"
+          tag_name: ${{ github.ref_name }}
+          prerelease: false
+          files: C:/programs/emacs-*.tar.gz

@@ -30,7 +30,7 @@ cd /c/emacs
 git clone --depth=1 https://git.savannah.gnu.org/git/emacs.git emacs-master
 cd /c/emacs/emacs-master
 EMACS_COMMIT=$(git rev-parse --short HEAD)
-EMACS_VER=$(date +'%Y%m%d')_${EMACS_COMMIT}
+EMACS_VER=$(date +'%Y%m%d')-${EMACS_COMMIT}
 
 ./autogen.sh
 ./configure --prefix=/c/programs/emacs --without-dbus --without-native-compilation
