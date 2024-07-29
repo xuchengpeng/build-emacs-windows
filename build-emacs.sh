@@ -42,7 +42,6 @@ cp -v /mingw64/bin/libbrotlicommon.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libbrotlidec.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libbz*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libcairo-*.dll /c/programs/emacs/bin
-cp -v /mingw64/bin/libcairo-gobject-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libdatrie-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libdeflate.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libexpat-*.dll /c/programs/emacs/bin
