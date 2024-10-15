@@ -40,6 +40,7 @@ make install
 
 cp -v /mingw64/bin/libbrotlicommon.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libbrotlidec.dll /c/programs/emacs/bin
+cp -v /mingw64/bin/libbrotlienc.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libbz*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libcairo-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libdatrie-*.dll /c/programs/emacs/bin
@@ -64,11 +65,14 @@ cp -v /mingw64/bin/libhogweed-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libiconv-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libidn*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libintl-*.dll /c/programs/emacs/bin
+cp -v /mingw64/bin/libisl-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libjbig-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libjpeg-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/liblcms*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libLerc.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/liblzma-*.dll /c/programs/emacs/bin
+cp -v /mingw64/bin/libmpc-*.dll /c/programs/emacs/bin
+cp -v /mingw64/bin/libmpfr-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libnettle-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libp11-kit-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libpango-*.dll /c/programs/emacs/bin
@@ -79,6 +83,7 @@ cp -v /mingw64/bin/libpcre*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libpixman-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libpng*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/librsvg*.dll /c/programs/emacs/bin
+cp -v /mingw64/bin/libsharpyuv-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libsqlite*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libstdc++-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libtasn1-*.dll /c/programs/emacs/bin
@@ -92,6 +97,7 @@ cp -v /mingw64/bin/libwinpthread-*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libxml*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libXpm*.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/libzstd.dll /c/programs/emacs/bin
+cp -v /mingw64/bin/wasmtime.dll /c/programs/emacs/bin
 cp -v /mingw64/bin/zlib*.dll /c/programs/emacs/bin
 
 cd /c/programs/
