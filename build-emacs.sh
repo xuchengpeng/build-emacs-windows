@@ -3,6 +3,7 @@
 set -v
 
 repo_branch=$1
+native_comp=$2
 
 pacman --noconfirm -S --needed \
     base-devel \
@@ -34,7 +35,7 @@ git clone --depth=1 --branch ${repo_branch} https://git.savannah.gnu.org/git/ema
 install_dir=/c/programs/emacs
 cd /c/emacs/emacs-repo
 ./autogen.sh
-./configure --prefix=${install_dir} --with-native-compilation=aot --with-tree-sitter --without-dbus --without-pop
+./configure --prefix=${install_dir} ${native_comp} --with-tree-sitter --without-dbus --without-pop
 NPROC=$(nproc)
 make -j${NPROC}
 make install
@@ -51,7 +52,6 @@ cp -v /mingw64/bin/libffi-*.dll ${install_dir}/bin
 cp -v /mingw64/bin/libfontconfig-*.dll ${install_dir}/bin
 cp -v /mingw64/bin/libfreetype-*.dll ${install_dir}/bin
 cp -v /mingw64/bin/libfribidi-*.dll ${install_dir}/bin
-cp -v /mingw64/bin/libgccjit*.dll ${install_dir}/bin
 cp -v /mingw64/bin/libgcc_s_seh-*.dll ${install_dir}/bin
 cp -v /mingw64/bin/libgdk_pixbuf-*.dll ${install_dir}/bin
 cp -v /mingw64/bin/libgif-*.dll ${install_dir}/bin
@@ -102,13 +102,16 @@ cp -v /mingw64/bin/libzstd.dll ${install_dir}/bin
 cp -v /mingw64/bin/wasmtime.dll ${install_dir}/bin
 cp -v /mingw64/bin/zlib*.dll ${install_dir}/bin
 
-mkdir -p ${install_dir}/lib/gcc
-cp -v /mingw64/lib/{crtbegin,crtend,dllcrt2}.o ${install_dir}/lib/gcc
-cp -v /mingw64/lib/lib{advapi32,gcc_s,kernel32,mingw32,mingwex,moldname,msvcrt,pthread,shell32,user32}.a ${install_dir}/lib/gcc
-cp -v /mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/libgcc.a ${install_dir}/lib/gcc
-cp -v /mingw64/bin/{ld,as}.exe ${install_dir}/lib/gcc
-cp -v /mingw64/bin/libzstd.dll ${install_dir}/lib/gcc
-cp -v /mingw64/bin/zlib*.dll ${install_dir}/lib/gcc
+if [[ "${native_comp}" != "--without-native-compilation" ]]; then
+    cp -v /mingw64/bin/libgccjit*.dll ${install_dir}/bin
+    mkdir -p ${install_dir}/lib/gcc
+    cp -v /mingw64/lib/{crtbegin,crtend,dllcrt2}.o ${install_dir}/lib/gcc
+    cp -v /mingw64/lib/lib{advapi32,gcc_s,kernel32,mingw32,mingwex,moldname,msvcrt,pthread,shell32,user32}.a ${install_dir}/lib/gcc
+    cp -v /mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/libgcc.a ${install_dir}/lib/gcc
+    cp -v /mingw64/bin/{ld,as}.exe ${install_dir}/lib/gcc
+    cp -v /mingw64/bin/libzstd.dll ${install_dir}/lib/gcc
+    cp -v /mingw64/bin/zlib*.dll ${install_dir}/lib/gcc
+fi
 
 cd /c/programs/
 tar -zcf emacs.tar.gz emacs

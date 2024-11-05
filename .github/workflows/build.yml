@@ -13,6 +13,9 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    strategy:
+      matrix:
+        native_comp: [--without-native-compilation, --with-native-compilation, --with-native-compilation=aot]
     steps:
       - name: git config
         run: git config --global core.autocrlf false
@@ -27,17 +30,20 @@ jobs:
         shell: msys2 {0}
         run: |
           chmod +x build-emacs.sh
-          ./build-emacs.sh master
+          ./build-emacs.sh master ${{ matrix.native_comp }}
           cd /c/emacs/emacs-repo
           EMACS_VER=$(date +'%Y%m%d')-$(git rev-parse --short HEAD)
           echo "EMACS_VER=`date  +'%Y%m%d'`-`git rev-parse --short HEAD`" >> $GITHUB_ENV
+          NATIVE_COMP=${{ matrix.native_comp }}
+          NATIVE_COMP=${NATIVE_COMP//=/-}
+          NATIVE_COMP=${NATIVE_COMP//--/-}
           cd /c/programs/
-          mv emacs.tar.gz emacs-${EMACS_VER}.tar.gz
+          mv emacs.tar.gz emacs-${EMACS_VER}${NATIVE_COMP}.tar.gz
       - name: upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: emacs-${{ env.EMACS_VER }}.tar.gz
-          path: C:/programs/emacs-${{ env.EMACS_VER }}.tar.gz
+          name: emacs-${{ env.EMACS_VER }}${{ matrix.native_comp }}
+          path: C:/programs/emacs-*.tar.gz
           if-no-files-found: error
   release:
     runs-on: ubuntu-latest
@@ -55,7 +61,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: ./
-          pattern: emacs-*.tar.gz
+          pattern: emacs-*
           merge-multiple: true
       - name: generate changelog
         run: ls emacs-*.tar.gz | xargs -I {} echo {} >> CHANGELOG.txt
