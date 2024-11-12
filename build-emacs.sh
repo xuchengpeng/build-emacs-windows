@@ -23,7 +23,7 @@ pacman --noconfirm -S --needed \
     mingw-w64-x86_64-harfbuzz \
     mingw-w64-x86_64-libgccjit \
     mingw-w64-x86_64-sqlite3 \
-    mingw-w64-x86_64-tree-sitter
+    mingw-w64-x86_64-libtree-sitter
 
 pacman --noconfirm -S git autotools
 git config --global core.autocrlf false
@@ -91,7 +91,7 @@ cp -v /mingw64/bin/libstdc++-*.dll ${install_dir}/bin
 cp -v /mingw64/bin/libtasn1-*.dll ${install_dir}/bin
 cp -v /mingw64/bin/libthai-*.dll ${install_dir}/bin
 cp -v /mingw64/bin/libtiff-*.dll ${install_dir}/bin
-cp -v /mingw64/bin/libtree-sitter.dll ${install_dir}/bin
+cp -v /mingw64/bin/libtree-sitter-*.dll ${install_dir}/bin/libtree-sitter.dll
 cp -v /mingw64/bin/libunistring-*.dll ${install_dir}/bin
 cp -v /mingw64/bin/libwebp-*.dll ${install_dir}/bin
 cp -v /mingw64/bin/libwebpdemux-*.dll ${install_dir}/bin
