@@ -35,7 +35,7 @@ git clone --depth=1 --branch ${repo_branch} https://git.savannah.gnu.org/git/ema
 install_dir=/c/programs/emacs
 cd /c/emacs/emacs-repo
 ./autogen.sh
-./configure --prefix=${install_dir} ${native_comp} --with-tree-sitter --without-dbus --without-pop
+./configure --prefix=${install_dir} ${native_comp} --with-gnutls --with-xpm --with-tree-sitter --without-dbus --without-pop
 NPROC=$(nproc)
 make -j${NPROC}
 make install
