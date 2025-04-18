@@ -30,7 +30,7 @@ git config --global core.autocrlf false
 
 mkdir /c/emacs
 cd /c/emacs
-git clone --depth=1 --branch ${repo_branch} https://git.savannah.gnu.org/git/emacs.git emacs-repo
+git clone --depth=1 --branch ${repo_branch} https://github.com/emacsmirror/emacs.git emacs-repo
 
 install_dir=/c/programs/emacs
 cd /c/emacs/emacs-repo
