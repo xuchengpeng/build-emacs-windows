@@ -107,7 +107,7 @@ if [[ "${native_comp}" != "--without-native-compilation" ]]; then
     mkdir -p ${install_dir}/lib/gcc
     cp -v /mingw64/lib/{crtbegin,crtend,dllcrt2}.o ${install_dir}/lib/gcc
     cp -v /mingw64/lib/lib{advapi32,gcc_s,kernel32,mingw32,mingwex,moldname,msvcrt,pthread,shell32,user32}.a ${install_dir}/lib/gcc
-    cp -v /mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/libgcc.a ${install_dir}/lib/gcc
+    cp -v /mingw64/lib/gcc/x86_64-w64-mingw32/[0-9][0-9].[0-9].[0-9]/libgcc.a ${install_dir}/lib/gcc
     cp -v /mingw64/bin/{ld,as}.exe ${install_dir}/lib/gcc
     cp -v /mingw64/bin/libzstd.dll ${install_dir}/lib/gcc
     cp -v /mingw64/bin/zlib*.dll ${install_dir}/lib/gcc
