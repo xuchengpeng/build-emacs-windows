@@ -26,6 +26,9 @@ jobs:
           msystem: MINGW64
           update: true
           cache: false
+          install: >-
+            zip
+            unzip
       - uses: actions/checkout@v4
       - name: build
         shell: msys2 {0}
@@ -39,12 +42,12 @@ jobs:
           NATIVE_COMP=${NATIVE_COMP//=/-}
           NATIVE_COMP=${NATIVE_COMP//--/-}
           cd /c/programs/
-          mv emacs.tar.gz emacs-${EMACS_VER}${NATIVE_COMP}.tar.gz
+          mv emacs.zip emacs-${EMACS_VER}${NATIVE_COMP}.zip
       - name: upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: emacs-${{ env.EMACS_VER }}${{ matrix.native_comp }}
-          path: C:/programs/emacs-*.tar.gz
+          path: C:/programs/emacs-*.zip
           if-no-files-found: error
   release:
     runs-on: ubuntu-latest
@@ -65,7 +68,7 @@ jobs:
           pattern: emacs-*
           merge-multiple: true
       - name: generate changelog
-        run: ls emacs-*.tar.gz | xargs -I {} echo {} >> CHANGELOG.txt
+        run: ls emacs-*.zip | xargs -I {} echo {} >> CHANGELOG.txt
       - name: release
         uses: softprops/action-gh-release@v2
         with:
@@ -74,4 +77,4 @@ jobs:
           body_path: CHANGELOG.txt
           draft: false
           prerelease: true
-          files: emacs-*.tar.gz
+          files: emacs-*.zip

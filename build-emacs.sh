@@ -114,4 +114,4 @@ if [[ "${native_comp}" != "--without-native-compilation" ]]; then
 fi
 
 cd /c/programs/
-tar -zcf emacs.tar.gz emacs
+zip -9rq emacs.zip emacs
