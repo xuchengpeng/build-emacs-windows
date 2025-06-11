@@ -70,7 +70,7 @@ jobs:
       - name: generate changelog
         run: ls emacs-*.zip | xargs -I {} echo {} >> CHANGELOG.txt
       - name: release
-        uses: softprops/action-gh-release@v2.2.2
+        uses: softprops/action-gh-release@v2
         with:
           name: emacs nightly build
           tag_name: nightly
