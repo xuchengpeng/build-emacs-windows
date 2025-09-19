@@ -31,6 +31,9 @@ git config --global core.autocrlf false
 mkdir /c/emacs
 cd /c/emacs
 git clone --depth=1 --branch ${repo_branch} https://github.com/emacsmirror/emacs.git emacs-repo
+# we likely have libxml2-16.dll instead of libxml2.dll
+# otherwise (libxml-available-p) will produce a message about missing dll
+sed -i "s/libxml2-2.dll/libxml2-16.dll/" emacs-repo/lisp/term/w32-nt.el
 
 install_dir=/c/programs/emacs
 cd /c/emacs/emacs-repo
