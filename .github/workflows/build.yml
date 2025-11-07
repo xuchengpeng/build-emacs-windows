@@ -44,7 +44,7 @@ jobs:
           cd /c/programs/
           mv emacs.zip emacs-${EMACS_VER}${NATIVE_COMP}.zip
       - name: upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: emacs-${{ env.EMACS_VER }}${{ matrix.native_comp }}
           path: C:/programs/emacs-*.zip
@@ -62,7 +62,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: download artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           path: ./
           pattern: emacs-*
