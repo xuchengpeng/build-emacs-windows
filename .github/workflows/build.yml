@@ -14,8 +14,21 @@ jobs:
   build:
     runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
-        native_comp: [--without-native-compilation, --with-native-compilation, --with-native-compilation=aot]
+        include:
+          - sys: mingw64
+            env: x86_64
+            native_comp: --without-native-compilation
+          - sys: mingw64
+            env: x86_64
+            native_comp: --with-native-compilation=aot
+          - sys: ucrt64
+            env: ucrt-x86_64
+            native_comp: --without-native-compilation
+          - sys: ucrt64
+            env: ucrt-x86_64
+            native_comp: --with-native-compilation=aot
     steps:
       - name: git config
         run: git config --global core.autocrlf false
@@ -23,7 +36,7 @@ jobs:
       - name: setup msys2
         uses: msys2/setup-msys2@v2
         with:
-          msystem: UCRT64
+          msystem: ${{ matrix.sys }}
           update: true
           cache: false
           install: >-
@@ -34,7 +47,7 @@ jobs:
         shell: msys2 {0}
         run: |
           chmod +x build-emacs.sh
-          ./build-emacs.sh master ${{ matrix.native_comp }}
+          ./build-emacs.sh master ${{ matrix.native_comp }} ${{ matrix.sys }} ${{ matrix.env }}
           cd /c/emacs/emacs-repo
           EMACS_VER=$(date +'%Y%m%d')-$(git rev-parse --short HEAD)
           echo "EMACS_VER=`date  +'%Y%m%d'`-`git rev-parse --short HEAD`" >> $GITHUB_ENV
@@ -42,11 +55,11 @@ jobs:
           NATIVE_COMP=${NATIVE_COMP//=/-}
           NATIVE_COMP=${NATIVE_COMP//--/-}
           cd /c/programs/
-          mv emacs.zip emacs-${EMACS_VER}${NATIVE_COMP}.zip
+          mv emacs.zip emacs-${EMACS_VER}-${{ matrix.env }}${NATIVE_COMP}.zip
       - name: upload artifact
         uses: actions/upload-artifact@v5
         with:
-          name: emacs-${{ env.EMACS_VER }}${{ matrix.native_comp }}
+          name: emacs-${{ env.EMACS_VER }}-${{ matrix.env }}${{ matrix.native_comp }}
           path: C:/programs/emacs-*.zip
           if-no-files-found: error
   release:
