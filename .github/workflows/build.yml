@@ -67,27 +67,16 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v6
-      - name: delete nightly release
-        shell: bash
-        run: |
-          gh release delete nightly --cleanup-tag --yes
-          sleep 5
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: download artifact
         uses: actions/download-artifact@v6
         with:
           path: ./
           pattern: emacs-*
           merge-multiple: true
-      - name: generate changelog
-        run: ls emacs-*.zip | xargs -I {} echo {} >> CHANGELOG.txt
       - name: release
-        uses: softprops/action-gh-release@v2
-        with:
-          name: emacs nightly build
-          tag_name: nightly
-          body_path: CHANGELOG.txt
-          draft: false
-          prerelease: true
-          files: emacs-*.zip
+        run: |
+          gh release delete nightly --cleanup-tag --yes
+          sleep 5
+          gh release create nightly emacs-*.zip --prerelease --title "emacs nightly build" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
