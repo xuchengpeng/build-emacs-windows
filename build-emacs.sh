@@ -1,6 +1,8 @@
 #!/bin/bash
 
-set -v
+set -o errexit
+set -o nounset
+set -o pipefail
 
 repo_branch=$1
 native_comp=$2
