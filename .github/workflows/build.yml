@@ -29,6 +29,8 @@ jobs:
           - sys: ucrt64
             env: ucrt-x86_64
             native_comp: --with-native-compilation=aot
+    outputs:
+      emacs_ver: ${{ steps.build.outputs.emacs_ver }}
     steps:
       - name: git config
         run: git config --global core.autocrlf false
@@ -44,6 +46,7 @@ jobs:
             unzip
       - uses: actions/checkout@v6
       - name: build
+        id: build
         shell: msys2 {0}
         run: |
           chmod +x build-emacs.sh
@@ -51,6 +54,7 @@ jobs:
           cd /c/emacs/emacs-repo
           EMACS_VER=$(date +'%Y%m%d')-$(git rev-parse --short HEAD)
           echo "EMACS_VER=`date  +'%Y%m%d'`-`git rev-parse --short HEAD`" >> $GITHUB_ENV
+          echo "emacs_ver=${EMACS_VER}" >> $GITHUB_OUTPUT
           NATIVE_COMP=${{ matrix.native_comp }}
           NATIVE_COMP=${NATIVE_COMP//=/-}
           NATIVE_COMP=${NATIVE_COMP//--/-}
@@ -77,6 +81,6 @@ jobs:
         run: |
           gh release delete nightly --cleanup-tag --yes
           sleep 5
-          gh release create nightly emacs-*.zip --prerelease --title "emacs nightly build" --generate-notes
+          gh release create nightly emacs-*.zip --prerelease --title "emacs-${{ needs.build.outputs.emacs_ver }}" --generate-notes
         env:
           GH_TOKEN: ${{ github.token }}
