@@ -4,10 +4,11 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-repo_branch=$1
-native_comp=$2
-msys=$3
-menv=$4
+repo_url=$1
+repo_branch=$2
+native_comp=$3
+msys=$4
+menv=$5
 install_dir=/c/programs/emacs
 
 function err() {
@@ -43,7 +44,7 @@ function clone() {
 
   mkdir /c/emacs
   cd /c/emacs
-  git clone --depth=1 --branch ${repo_branch} https://git.savannah.gnu.org/git/emacs.git emacs-repo
+  git clone --depth 1 --branch ${repo_branch} ${repo_url} emacs-repo
 }
 
 function build() {

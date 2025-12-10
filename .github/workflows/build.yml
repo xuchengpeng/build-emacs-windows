@@ -11,10 +11,28 @@ on:
     - cron: "0 0 * * *"
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    env:
+      REPO_URL: https://git.savannah.gnu.org/git/emacs.git
+    steps:
+      - uses: actions/checkout@v6
+      - name: get emacs version
+        run: |
+          mkdir -p ./git/emacs
+          cd ./git/emacs
+          git clone --depth 1 $REPO_URL .
+          version=`sed -n 's/^AC_INIT(\[[^]]*\], \[\([^]]*\)\], .*/\1/p' configure.ac`
+          commit=`git rev-parse --short HEAD`
+          ts=`date +'%Y%m%d'`
+          echo "emacs_ver=${version}-${ts}-${commit}" >> $GITHUB_ENV
+    outputs:
+      repo_url: ${{ env.REPO_URL }}
+      emacs_ver: ${{ env.emacs_ver }}
   build:
     runs-on: windows-latest
+    needs: prepare
     strategy:
-      fail-fast: false
       matrix:
         include:
           - sys: mingw64
@@ -29,8 +47,6 @@ jobs:
           - sys: ucrt64
             env: ucrt-x86_64
             native_comp: --with-native-compilation=aot
-    outputs:
-      emacs_ver: ${{ steps.build.outputs.emacs_ver }}
     steps:
       - name: git config
         run: git config --global core.autocrlf false
@@ -46,29 +62,23 @@ jobs:
             unzip
       - uses: actions/checkout@v6
       - name: build
-        id: build
         shell: msys2 {0}
         run: |
           chmod +x build-emacs.sh
-          ./build-emacs.sh master ${{ matrix.native_comp }} ${{ matrix.sys }} ${{ matrix.env }}
-          cd /c/emacs/emacs-repo
-          EMACS_VER=$(date +'%Y%m%d')-$(git rev-parse --short HEAD)
-          echo "EMACS_VER=`date  +'%Y%m%d'`-`git rev-parse --short HEAD`" >> $GITHUB_ENV
-          echo "emacs_ver=${EMACS_VER}" >> $GITHUB_OUTPUT
-          NATIVE_COMP=${{ matrix.native_comp }}
-          NATIVE_COMP=${NATIVE_COMP//=/-}
-          NATIVE_COMP=${NATIVE_COMP//--/-}
+          ./build-emacs.sh ${{ needs.prepare.outputs.repo_url }} master ${{ matrix.native_comp }} ${{ matrix.sys }} ${{ matrix.env }}
+          native_comp=`echo "${{ matrix.native_comp}}" | sed -e 's/=/-/g' -e 's/--/-/g' -e 's/^-//' -e 's/-$//'`
+          echo "native_comp=${native_comp}" >> $GITHUB_ENV
           cd /c/programs/
-          mv emacs.zip emacs-${EMACS_VER}-${{ matrix.env }}${NATIVE_COMP}.zip
+          mv emacs.zip emacs-${{ needs.prepare.outputs.emacs_ver }}-${{ matrix.env }}-${native_comp}.zip
       - name: upload artifact
         uses: actions/upload-artifact@v5
         with:
-          name: emacs-${{ env.EMACS_VER }}-${{ matrix.env }}${{ matrix.native_comp }}
+          name: emacs-${{ needs.prepare.outputs.emacs_ver }}-${{ matrix.env }}-${{ env.native_comp }}
           path: C:/programs/emacs-*.zip
           if-no-files-found: error
   release:
     runs-on: ubuntu-latest
-    needs: build
+    needs: [prepare, build]
     steps:
       - uses: actions/checkout@v6
       - name: download artifact
@@ -81,6 +91,6 @@ jobs:
         run: |
           gh release delete nightly --cleanup-tag --yes
           sleep 5
-          gh release create nightly emacs-*.zip --prerelease --title "emacs-${{ needs.build.outputs.emacs_ver }}" --generate-notes
+          gh release create nightly emacs-*.zip --prerelease --title "emacs-${{ needs.prepare.outputs.emacs_ver }}" --generate-notes
         env:
           GH_TOKEN: ${{ github.token }}
