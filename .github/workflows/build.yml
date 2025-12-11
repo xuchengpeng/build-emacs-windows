@@ -13,21 +13,14 @@ on:
 jobs:
   prepare:
     runs-on: ubuntu-latest
-    env:
-      REPO_URL: https://git.savannah.gnu.org/git/emacs.git
     steps:
-      - uses: actions/checkout@v6
       - name: get emacs version
         run: |
-          mkdir -p ./git/emacs
-          cd ./git/emacs
-          git clone --depth 1 $REPO_URL .
-          version=`sed -n 's/^AC_INIT(\[[^]]*\], \[\([^]]*\)\], .*/\1/p' configure.ac`
-          commit=`git rev-parse --short HEAD`
+          version=`curl -s https://cgit.git.savannah.gnu.org/cgit/emacs.git/plain/configure.ac | sed -n 's/^AC_INIT(\[[^]]*\], \[\([^]]*\)\], .*/\1/p'`
+          commit=`git ls-remote https://git.savannah.gnu.org/git/emacs.git HEAD | awk '{print substr($1,1,7)}'`
           ts=`date +'%Y%m%d'`
           echo "emacs_ver=${version}-${ts}-${commit}" >> $GITHUB_ENV
     outputs:
-      repo_url: ${{ env.REPO_URL }}
       emacs_ver: ${{ env.emacs_ver }}
   build:
     runs-on: windows-latest
@@ -65,7 +58,7 @@ jobs:
         shell: msys2 {0}
         run: |
           chmod +x build-emacs.sh
-          ./build-emacs.sh ${{ needs.prepare.outputs.repo_url }} master ${{ matrix.native_comp }} ${{ matrix.sys }} ${{ matrix.env }}
+          ./build-emacs.sh https://git.savannah.gnu.org/git/emacs.git master ${{ matrix.native_comp }} ${{ matrix.sys }} ${{ matrix.env }}
           native_comp=`echo "${{ matrix.native_comp}}" | sed -e 's/=/-/g' -e 's/--/-/g' -e 's/^-//' -e 's/-$//'`
           echo "native_comp=${native_comp}" >> $GITHUB_ENV
           cd /c/programs/
