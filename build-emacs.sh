@@ -50,7 +50,7 @@ function clone() {
 function build() {
   cd /c/emacs/emacs-repo
   ./autogen.sh
-  ./configure --prefix=${install_dir} ${native_comp} --with-gnutls --with-xpm --with-tree-sitter --without-dbus --without-pop
+  ./configure --prefix=${install_dir} ${native_comp} --with-gnutls --with-xpm --with-tree-sitter --without-compress-install --without-dbus --without-pop
   make -j$(nproc)
   make install
 }
