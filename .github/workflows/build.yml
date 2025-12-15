@@ -59,7 +59,7 @@ jobs:
         run: |
           chmod +x build-emacs.sh
           ./build-emacs.sh https://git.savannah.gnu.org/git/emacs.git master ${{ matrix.native_comp }} ${{ matrix.sys }} ${{ matrix.env }}
-          native_comp=`echo "${{ matrix.native_comp}}" | sed -e 's/=/-/g' -e 's/--/-/g' -e 's/^-//' -e 's/-$//'`
+          native_comp=`echo "${{ matrix.native_comp}}" | sed -e 's/=/-/g' -e 's/-\{2,\}/-/g' -e 's/^-*//g' -e 's/-*$//g'`
           echo "native_comp=${native_comp}" >> $GITHUB_ENV
           cd /c/programs/
           mv emacs.zip emacs-${{ needs.prepare.outputs.emacs_ver }}-${{ matrix.env }}-${native_comp}.zip
