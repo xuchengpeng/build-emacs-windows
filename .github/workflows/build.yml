@@ -64,7 +64,7 @@ jobs:
           cd /c/programs/
           mv emacs.zip emacs-${{ needs.prepare.outputs.emacs_ver }}-${{ matrix.env }}-${native_comp}.zip
       - name: upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: emacs-${{ needs.prepare.outputs.emacs_ver }}-${{ matrix.env }}-${{ env.native_comp }}
           path: C:/programs/emacs-*.zip
@@ -75,7 +75,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: download artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           path: ./
           pattern: emacs-*
