@@ -36,7 +36,7 @@ function install_deps() {
          mingw-w64-${menv}-sqlite3 \
          mingw-w64-${menv}-libtree-sitter
 
-  pacman --noconfirm -S git autotools
+  pacman --noconfirm -S git autotools texinfo
 }
 
 function clone() {
