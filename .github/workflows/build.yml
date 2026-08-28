@@ -58,7 +58,7 @@ jobs:
         shell: msys2 {0}
         run: |
           chmod +x build-emacs.sh
-          ./build-emacs.sh https://github.com/emacsmirror/emacs.git master ${{ matrix.native_comp }} ${{ matrix.sys }} ${{ matrix.env }}
+          ./build-emacs.sh nightly ${{ matrix.native_comp }} ${{ matrix.sys }} ${{ matrix.env }}
           native_comp=`echo "${{ matrix.native_comp}}" | sed -e 's/=/-/g' -e 's/-\{2,\}/-/g' -e 's/^-*//g' -e 's/-*$//g'`
           echo "native_comp=${native_comp}" >> $GITHUB_ENV
           cd /c/programs/

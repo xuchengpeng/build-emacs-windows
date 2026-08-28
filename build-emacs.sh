@@ -4,11 +4,10 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-repo_url=$1
-repo_branch=$2
-native_comp=$3
-msys=$4
-menv=$5
+version=$1
+native_comp=$2
+msys=$3
+menv=$4
 install_dir=/c/programs/emacs
 
 function err() {
@@ -44,12 +43,12 @@ function clone() {
 
   mkdir /c/emacs
   cd /c/emacs
-  git clone --depth 1 --branch ${repo_branch} ${repo_url} emacs-repo
+  git clone --depth 1 --branch master https://github.com/emacsmirror/emacs.git emacs-${version}
+  cd /c/emacs/emacs-${version}
+  ./autogen.sh
 }
 
 function build() {
-  cd /c/emacs/emacs-repo
-  ./autogen.sh
   ./configure --prefix=${install_dir} ${native_comp} --with-gnutls --with-xpm --with-tree-sitter --without-compress-install --without-dbus --without-pop
   make -j$(nproc)
   make install
@@ -134,6 +133,8 @@ function pack() {
 }
 
 install_deps
-clone
+if [[ "${version}" == "nightly" ]]; then
+  clone
+fi
 build
 pack
