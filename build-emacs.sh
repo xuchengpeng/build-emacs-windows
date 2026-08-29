@@ -57,7 +57,7 @@ function download() {
 }
 
 function build() {
-  ./configure --prefix=${install_dir} ${native_comp} --with-modules --with-gnutls --with-xpm --with-tree-sitter --without-compress-install --without-dbus
+  ./configure --prefix=${install_dir} ${native_comp} --with-modules --with-gnutls --with-xpm --with-tree-sitter --without-compress-install --without-dbus --disable-acl
   make -j$(nproc)
   make install
 }
