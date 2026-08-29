@@ -48,6 +48,14 @@ function clone() {
   ./autogen.sh
 }
 
+function download() {
+  mkdir /c/emacs
+  cd /c/emacs
+  curl -sLJO "https://ftp.gnu.org/gnu/emacs/emacs-${version}.tar.xz"
+  tar -xf emacs-${version}.tar.xz
+  cd /c/emacs/emacs-${version}
+}
+
 function build() {
   ./configure --prefix=${install_dir} ${native_comp} --with-gnutls --with-xpm --with-tree-sitter --without-compress-install --without-dbus --without-pop
   make -j$(nproc)
@@ -135,6 +143,8 @@ function pack() {
 install_deps
 if [[ "${version}" == "nightly" ]]; then
   clone
+else
+  download
 fi
 build
 pack
