@@ -16,24 +16,24 @@ function err() {
 
 function install_deps() {
   pacman --noconfirm -S --needed \
-         base-devel \
-         mingw-w64-${menv}-toolchain \
-         mingw-w64-${menv}-xpm-nox \
-         mingw-w64-${menv}-gmp \
-         mingw-w64-${menv}-gnutls \
-         mingw-w64-${menv}-libtiff \
-         mingw-w64-${menv}-giflib \
-         mingw-w64-${menv}-libpng \
-         mingw-w64-${menv}-libjpeg-turbo \
-         mingw-w64-${menv}-librsvg \
-         mingw-w64-${menv}-libwebp \
-         mingw-w64-${menv}-lcms2 \
-         mingw-w64-${menv}-libxml2 \
-         mingw-w64-${menv}-zlib \
-         mingw-w64-${menv}-harfbuzz \
-         mingw-w64-${menv}-libgccjit \
-         mingw-w64-${menv}-sqlite3 \
-         mingw-w64-${menv}-libtree-sitter
+    base-devel \
+    mingw-w64-${menv}-toolchain \
+    mingw-w64-${menv}-xpm-nox \
+    mingw-w64-${menv}-gmp \
+    mingw-w64-${menv}-gnutls \
+    mingw-w64-${menv}-libtiff \
+    mingw-w64-${menv}-giflib \
+    mingw-w64-${menv}-libpng \
+    mingw-w64-${menv}-libjpeg-turbo \
+    mingw-w64-${menv}-librsvg \
+    mingw-w64-${menv}-libwebp \
+    mingw-w64-${menv}-lcms2 \
+    mingw-w64-${menv}-libxml2 \
+    mingw-w64-${menv}-zlib \
+    mingw-w64-${menv}-harfbuzz \
+    mingw-w64-${menv}-libgccjit \
+    mingw-w64-${menv}-sqlite3 \
+    mingw-w64-${menv}-libtree-sitter
 
   pacman --noconfirm -S git autotools texinfo
 }
