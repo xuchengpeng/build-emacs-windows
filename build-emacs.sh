@@ -4,6 +4,8 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+SRCDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 version=$1
 native_comp=$2
 msys=$3
@@ -33,9 +35,12 @@ function install_deps() {
     mingw-w64-${menv}-harfbuzz \
     mingw-w64-${menv}-libgccjit \
     mingw-w64-${menv}-sqlite3 \
-    mingw-w64-${menv}-libtree-sitter
+    mingw-w64-${menv}-libtree-sitter \
+    mingw-w64-${menv}-libwinpthread \
+    mingw-w64-${menv}-autotools \
+    mingw-w64-${menv}-texinfo
 
-  pacman --noconfirm -S git autotools texinfo
+  pacman --noconfirm -S git
 }
 
 function clone() {
@@ -45,6 +50,7 @@ function clone() {
   cd /c/emacs
   git clone --depth 1 --branch master https://github.com/emacsmirror/emacs.git emacs-${version}
   cd /c/emacs/emacs-${version}
+  patch -Np1 -i "${SRCDIR}/001-libtree-sitter-0.27.patch"
   ./autogen.sh
 }
 
