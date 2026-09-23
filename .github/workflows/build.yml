@@ -28,12 +28,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - sys: mingw64
-            env: x86_64
-            native_comp: --without-native-compilation
-          - sys: mingw64
-            env: x86_64
-            native_comp: --with-native-compilation=aot
           - sys: ucrt64
             env: ucrt-x86_64
             native_comp: --without-native-compilation
