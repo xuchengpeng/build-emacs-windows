@@ -43,10 +43,6 @@ function install_deps() {
   pacman --noconfirm -S git
 }
 
-function apply_patch() {
-  patch -Np1 -i "${SRCDIR}/001-libtree-sitter-0.27.patch"
-}
-
 function clone() {
   git config --global core.autocrlf false
 
@@ -54,7 +50,6 @@ function clone() {
   cd /c/emacs
   git clone --depth 1 --branch master https://github.com/emacsmirror/emacs.git emacs-${version}
   cd /c/emacs/emacs-${version}
-  apply_patch
   ./autogen.sh
 }
 
@@ -64,7 +59,6 @@ function download() {
   curl -sLJO "https://ftp.gnu.org/gnu/emacs/emacs-${version}.tar.xz"
   tar -xf emacs-${version}.tar.xz
   cd /c/emacs/emacs-${version}
-  apply_patch
 }
 
 function build() {
