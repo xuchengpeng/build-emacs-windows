@@ -98,7 +98,7 @@ function pack() {
   cp -v /${msys}/bin/libglib-*.dll ${install_dir}/bin
   cp -v /${msys}/bin/libgmodule-*.dll ${install_dir}/bin
   cp -v /${msys}/bin/libgmp-*.dll ${install_dir}/bin
-  cp -v /${msys}/bin/libgnutls-*.dll ${install_dir}/bin
+  cp -v /${msys}/bin/libgnutls*.dll ${install_dir}/bin
   cp -v /${msys}/bin/libgobject-*.dll ${install_dir}/bin
   cp -v /${msys}/bin/libgraphite*.dll ${install_dir}/bin
   cp -v /${msys}/bin/libharfbuzz-*.dll ${install_dir}/bin
@@ -139,7 +139,8 @@ function pack() {
   cp -v /${msys}/bin/libXpm*.dll ${install_dir}/bin
   cp -v /${msys}/bin/libzstd.dll ${install_dir}/bin
   cp -v /${msys}/bin/wasmtime.dll ${install_dir}/bin
-  cp -v /${msys}/bin/zlib*.dll ${install_dir}/bin
+  cp -v /${msys}/bin/zlib1.dll ${install_dir}/bin
+  cp -v /${msys}/bin/libz-1.dll ${install_dir}/bin
 
   if [[ "${native_comp}" != "--without-native-compilation" ]]; then
     cp -v /${msys}/bin/libgccjit*.dll ${install_dir}/bin
