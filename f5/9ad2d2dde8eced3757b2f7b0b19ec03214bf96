@@ -1,0 +1,14 @@
+build-emacs.sh
+  h_76dde7977e1f21 51-55,145
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "10.11.1",
+  "base_commit_sha": "f59ad2d2dde8eced3757b2f7b0b19ec03214bf96",
+  "prompts": {},
+  "humans": {
+    "h_76dde7977e1f21": {
+      "author": "xuchengpeng <chuckxcp@qq.com>"
+    }
+  }
+}
