@@ -56,7 +56,18 @@ function clone() {
 function download() {
   mkdir /c/emacs
   cd /c/emacs
-  curl -sLJO "https://ftp.gnu.org/gnu/emacs/emacs-${version}.tar.xz"
+  ftp_url="https://ftp.gnu.org/gnu/emacs/emacs-${version}.tar.xz"
+  alpha_url="https://alpha.gnu.org/gnu/emacs/pretest/emacs-${version}.tar.xz"
+  if curl -fsIL "${ftp_url}" >/dev/null 2>&1; then
+    url="${ftp_url}"
+  elif curl -fsIL "${alpha_url}" >/dev/null 2>&1; then
+    url="${alpha_url}"
+  else
+    echo "Error: No emacs-${version}.tar.xz found" >&2
+    exit 1
+  fi
+  echo "Download from ${url}"
+  curl -fL -o "emacs-${version}.tar.xz" "${url}"
   tar -xf emacs-${version}.tar.xz
   cd /c/emacs/emacs-${version}
 }
